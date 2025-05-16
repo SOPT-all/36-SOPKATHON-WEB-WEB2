@@ -1,0 +1,28 @@
+@import 'reset-css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  font-family: 'Pretendard', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.5; 
+}
+
+a {
+  color: inherit; 
+  text-decoration: none; 
+}
+
+button {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
