@@ -50,3 +50,12 @@ button {
   right: 0;
   z-index: 10;
 }
+
+/* global.css 혹은 styles/globals.css 등 */
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
