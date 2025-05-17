@@ -10,16 +10,16 @@ interface PlaceCardListProps {
   activateStamp?: (type: 'yes' | 'no') => void; // 도장 활성화 함수
 }
 
-const PlaceCardList = ({ 
-  places, 
-  selectedPlaceId, 
-  voteState, 
-  onVote, 
-  activateStamp 
+const PlaceCardList = ({
+  places,
+  selectedPlaceId,
+  voteState,
+  onVote,
+  activateStamp,
 }: PlaceCardListProps) => {
   // 선택된 장소만 찾아서 표시
-  const selectedPlace = selectedPlaceId 
-    ? places.find(place => place.id === selectedPlaceId) 
+  const selectedPlace = selectedPlaceId
+    ? places.find(place => place.id === selectedPlaceId)
     : places[0]; // 선택된 장소가 없으면 첫 번째 장소 표시
 
   // 선택된 장소가 없으면 아무것도 표시하지 않음
@@ -28,7 +28,7 @@ const PlaceCardList = ({
   }
 
   return (
-    <div className="fixed bottom-2 mb-[94px] left-0 right-0 flex justify-center z-10">
+    <div className="fixed bottom-2 mb-[44px] left-0 right-0 flex justify-center z-10">
       <PlaceCard
         id={selectedPlace.id}
         title={selectedPlace.title}
@@ -47,4 +47,4 @@ const PlaceCardList = ({
   );
 };
 
-export default PlaceCardList; 
+export default PlaceCardList;
