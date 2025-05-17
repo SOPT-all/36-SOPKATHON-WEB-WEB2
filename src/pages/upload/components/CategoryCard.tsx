@@ -8,20 +8,28 @@ interface CategoryCardProps {
   onClick?: () => void;
 }
 
-const CategoryCard = ({ title, description, imgSrc, selected = false, onClick }: CategoryCardProps) => {
+const CategoryCard = ({
+  title,
+  description,
+  imgSrc,
+  selected = false,
+  onClick,
+}: CategoryCardProps) => {
   return (
-    <div 
+    <div
       className={`p-[8px] rounded-lg inline-flex justify-between items-center w-[342px] h-[118px] ${
-        selected 
-          ? 'bg-sky-100 outline outline-1 outline-offset-[-1px] outline-teal-400' 
+        selected
+          ? 'bg-sky-100 outline outline-1 outline-offset-[-1px] outline-teal-400'
           : 'bg-gray-100'
       }`}
       onClick={onClick}
     >
       <div className="inline-flex flex-col justify-start items-start gap-2 ml-[4px]">
-        <div className={`self-stretch justify-center text-lg font-bold font-pretendard leading-relaxed ${
-          selected ? 'text-teal-400' : 'text-black'
-        }`}>
+        <div
+          className={`self-stretch justify-center text-lg font-bold font-pretendard leading-relaxed ${
+            selected ? 'text-teal-400' : 'text-black'
+          }`}
+        >
           {title}
         </div>
         <div className="self-stretch justify-center text-gray-400 text-xs font-medium font-pretendard leading-tight">
@@ -38,4 +46,4 @@ const CategoryCard = ({ title, description, imgSrc, selected = false, onClick }:
   );
 };
 
-export default CategoryCard; 
+export default CategoryCard;
