@@ -22,6 +22,8 @@ export interface PinResponse {
     likeRate: number;
     hateLate: number;
   };
+}
+
 // API 응답 기본 구조
 export interface ApiResponse<T> {
   code: string;
@@ -54,4 +56,4 @@ export interface PinListItem {
 // 핀 목록 응답 데이터
 export interface PinsListResponse {
   pins: PinListItem[];
-} 
+}

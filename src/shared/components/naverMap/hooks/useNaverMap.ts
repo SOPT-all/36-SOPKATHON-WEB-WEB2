@@ -114,7 +114,7 @@ export const useNaverMap = ({
           onMapClick(lat, lng);
         });
       }
-      
+
       setMap(mapInstance);
 
       if (onMapReady) {

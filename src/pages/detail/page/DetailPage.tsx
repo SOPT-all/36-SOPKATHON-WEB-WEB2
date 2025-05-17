@@ -30,6 +30,8 @@ const DetailPage = () => {
             positivePercent: data.likeRate,
             negativePercent: data.hateLate,
             imageUrl: data.image,
+            location: `${data.latitude}, ${data.longitude}`,
+            reviews: [],
           });
         } else {
           setError('해당 장소를 찾을 수 없습니다.');
