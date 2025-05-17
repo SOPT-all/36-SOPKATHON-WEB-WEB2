@@ -1,15 +1,21 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainPage from '@/pages/main/page/MainPage';
-import Page1 from '@/pages/page1/page/Page1';
+import Detail from '@/pages/detail/Detail';
+import Upload from '@/pages/upload/upload';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainPage />,
   },
+
   {
-    path: '/page1',
-    element: <Page1 />,
+    path: '/detail/:id',
+    element: <Detail />,
+  },
+  {
+    path: '/upload',
+    element: <Upload />,
   },
 ]);
 
