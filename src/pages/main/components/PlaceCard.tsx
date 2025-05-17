@@ -13,6 +13,7 @@ interface PlaceCardProps {
   isSelected?: boolean; // 현재 선택된 장소인지 여부 (지도에서 선택 시)
   onVote?: (id: string, isPositive: boolean) => void; // 투표 기능
   activateStamp?: (type: 'yes' | 'no') => void; // 도장 활성화 함수
+  reviews?: string[]; // 리뷰 카테고리 배열
 }
 
 const PlaceCard = ({
@@ -27,6 +28,7 @@ const PlaceCard = ({
   isSelected = false,
   onVote,
   activateStamp,
+  reviews = [],
 }: PlaceCardProps) => {
   const navigate = useNavigate();
 
@@ -74,7 +76,7 @@ const PlaceCard = ({
         {/* 장소 이미지 */}
         <img 
           className="w-16 h-16 rounded-lg mr-3" 
-          src={PlaceImage} 
+          src={imageUrl || PlaceImage} 
           alt={title} 
         />
         
@@ -86,10 +88,22 @@ const PlaceCard = ({
           <div className="text-zinc-500 text-xs">
             {location}
           </div>
-          <div className="mt-1">
-            <span className="px-2 py-1 bg-teal-400 rounded text-white text-xs">
-              {tag}
-            </span>
+          {/* 리뷰 카테고리 표시 */}
+          <div className="mt-1 flex flex-wrap gap-1">
+            {reviews && reviews.length > 0 ? (
+              reviews.map((review, index) => (
+                <span 
+                  key={index} 
+                  className="px-2 py-1 bg-teal-400 rounded text-white text-xs"
+                >
+                  {review}
+                </span>
+              ))
+            ) : tag && (
+              <span className="px-2 py-1 bg-teal-400 rounded text-white text-xs">
+                {tag}
+              </span>
+            )}
           </div>
         </div>
       </div>

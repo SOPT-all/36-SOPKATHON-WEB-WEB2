@@ -109,4 +109,4 @@ https://marvelous-creek-fcf.notion.site/Client-387a8a366cf2487a9e3f2d38e43f48ea?
 <img src="https://github.com/user-attachments/assets/37094129-945e-4eb6-970f-c97203f68674" alt="웨비 팀원들 사진 (before)"/>
  
 <h3>After</h3>
-<img src="" alt="웨비 팀원들 사진 (after)"/>
+<img src="https://github.com/user-attachments/assets/a068b1ea-ba37-42b8-913b-9ca424c361b2" alt="웨비 팀원들 사진 (after)"/>
