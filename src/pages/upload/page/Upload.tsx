@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import ArrowLeft from '@/shared/assets/svg/arrow_left.svg';
 import CameraIcon from '@/shared/assets/svg/camera.svg';
 import Button from '@/shared/components/Button';
+import RegionSelector from '../components/RegionSelector';
+
 const Upload = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState<string | null>(null);
@@ -10,6 +12,7 @@ const Upload = () => {
   const [regionName, setRegionName] = useState('');
   const [selectedEvaluations, setSelectedEvaluations] = useState<string[]>([]);
   const [review, setReview] = useState('');
+  const [isRegionSelectorOpen, setRegionSelectorOpen] = useState(false);
 
   const evaluationOptions = [
     '사람이 많아요',
@@ -47,12 +50,17 @@ const Upload = () => {
     });
   };
 
+  const handleRegionSelect = (region: string) => {
+    setRegionName(region);
+    setRegionSelectorOpen(false);
+  };
+
   return (
     <>
       <button onClick={() => navigate(-1)} className="mb-[1rem]">
         <img src={ArrowLeft} alt="뒤로가기" />
       </button>
-      <div className="w-full min-h-screen bg-white px-[1rem]">
+      <div className="w-full h-screen bg-white px-[1rem] overflow-y-auto">
         <div className="max-w-[23.4375rem] mx-auto flex flex-col gap-[1rem]">
           <div className="flex flex-col gap-2">
             <label className="text-black text-sm font-semibold font-['Pretendard'] leading-tight">
@@ -75,10 +83,10 @@ const Upload = () => {
                 type="text"
                 placeholder="지역명을 선택해주세요"
                 value={regionName}
-                onChange={e => setRegionName(e.target.value)}
+                onClick={() => setRegionSelectorOpen(true)}
+                readOnly
                 className="w-[21.375rem] h-[3rem] py-[1rem] px-[0.75rem] bg-[#F3F3F6] rounded-[0.5rem] outline-none flex items-center gap-[0.625rem] flex-shrink-0 placeholder:text-[#999AAB] placeholder:font-medium placeholder:text-sm placeholder:font-['Pretendard'] placeholder:leading-[140%]"
               />
-
               <svg
                 className="absolute right-4 top-1/2 transform -translate-y-1/2"
                 width="20"
@@ -118,7 +126,7 @@ const Upload = () => {
             </div>
           </div>
           <textarea
-            placeholder="placeholder"
+            placeholder="장소에 대한 한 줄 리뷰를 작성해주세요"
             value={review}
             onChange={e => setReview(e.target.value)}
             className="w-[21.375rem] py-[0.75rem] px-[0.625rem] bg-[#F3F3F6] rounded-[0.5rem] min-h-[100px] resize-none outline-none flex-shrink-0 placeholder:text-[#999AAB] placeholder:font-medium placeholder:text-sm placeholder:font-['Pretendard'] placeholder:leading-[140%]"
@@ -145,11 +153,17 @@ const Upload = () => {
               />
             </div>
           </div>
-          <Button onClick={handleSubmit} variant="teal" className="mt-[1.69rem] mb-[3.125rem]">
+          <Button onClick={handleSubmit} variant="teal" className="mt-[1.69rem] mb-[6rem]">
             등록하기
           </Button>
         </div>
       </div>
+
+      <RegionSelector
+        isOpen={isRegionSelectorOpen}
+        onClose={() => setRegionSelectorOpen(false)}
+        onSelectRegion={handleRegionSelect}
+      />
     </>
   );
 };
