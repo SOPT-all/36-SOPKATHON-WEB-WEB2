@@ -34,7 +34,9 @@ export const useNaverMap = ({
   const [location, setLocation] = useState({ lat: latitude, lng: longitude });
   const [isLoading, setIsLoading] = useState(useCurrentLocation);
   const [map, setMap] = useState<any>(null);
+  const markerRefs = useRef<naver.maps.Marker[]>([]); // ✅ 마커들 참조
 
+  // 현재 위치 가져오기
   useEffect(() => {
     if (!useCurrentLocation) {
       setLocation({ lat: latitude, lng: longitude });
@@ -47,7 +49,6 @@ export const useNaverMap = ({
       navigator.geolocation.getCurrentPosition(
         position => {
           const { latitude: currentLat, longitude: currentLng } = position.coords;
-          console.log('현재 위치:', currentLat, currentLng);
           setLocation({ lat: currentLat, lng: currentLng });
           setIsLoading(false);
 
@@ -72,7 +73,7 @@ export const useNaverMap = ({
     }
   }, [useCurrentLocation, latitude, longitude]);
 
-  // 지도 초기화
+  // 지도 초기화 (최초 1회)
   useEffect(() => {
     if (isLoading) return;
 
@@ -97,6 +98,7 @@ export const useNaverMap = ({
 
       mapInstance.fitBounds(bounds);
 
+      // 충북 경계선
       const chungbukCoords = CHUNGBUK_COORD_PAIRS.map(
         ([lat, lng]) => new window.naver.maps.LatLng(lat, lng)
       );
@@ -109,51 +111,61 @@ export const useNaverMap = ({
         strokeWeight: 3,
       });
 
-      pins.forEach(pin => {
-        const position = new window.naver.maps.LatLng(pin.latitude, pin.longitude);
-        const type = pin.defaultMark;
-        const isSelected = pin.pinId === selectedPinId;
-
-        const marker = new window.naver.maps.Marker({
-          position,
-          map: mapInstance,
-          icon: {
-            content: `<img src="${
-              type === 'O'
-                ? isSelected
-                  ? IC_Pin_click
-                  : IC_Pin_default
-                : isSelected
-                  ? IC_Pin_x_click
-                  : IC_Pin_x_default
-            }" alt="핀 아이콘 (${type})" style="width: 24px; height: 24px;" />`,
-            size: new window.naver.maps.Size(24, 24),
-            anchor: new window.naver.maps.Point(12, 12),
-          },
-        });
-
-        window.naver.maps.Event.addListener(marker, 'click', () => {
-          if (onPinClick) {
-            onPinClick(pin);
-          }
-        });
-      });
-
-      setMap(mapInstance);
+      setMap(mapInstance); // ✅ 이후 마커 렌더링은 별도 effect
     };
 
-    const mapScript = document.createElement('script');
-    mapScript.async = true;
-    mapScript.src = 'https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=xggulbmz22';
-    mapScript.onload = initMap;
-    document.head.appendChild(mapScript);
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=xggulbmz22';
+    script.onload = initMap;
+    document.head.appendChild(script);
 
     return () => {
-      const script = document.querySelector('script[src*="map.naver.com"]');
-      if (script) document.head.removeChild(script);
+      const existing = document.querySelector('script[src*="map.naver.com"]');
+      if (existing) document.head.removeChild(existing);
       delete window.navermap_authFailure;
     };
-  }, [location, isLoading, pins, selectedPinId, onPinClick]);
+  }, [isLoading]);
+
+  // 마커 렌더링은 따로 관리 (selectedPinId 변경 대응)
+  useEffect(() => {
+    if (!map) return;
+
+    // 이전 마커 제거
+    markerRefs.current.forEach(marker => marker.setMap(null));
+    markerRefs.current = [];
+
+    // 새 마커 렌더링
+    pins.forEach(pin => {
+      const position = new window.naver.maps.LatLng(pin.latitude, pin.longitude);
+      const type = pin.defaultMark;
+      const isSelected = pin.pinId === selectedPinId;
+
+      const marker = new window.naver.maps.Marker({
+        position,
+        map,
+        icon: {
+          content: `<img src="${
+            type === 'O'
+              ? isSelected
+                ? IC_Pin_click
+                : IC_Pin_default
+              : isSelected
+                ? IC_Pin_x_click
+                : IC_Pin_x_default
+          }" alt="핀 아이콘 (${type})" style="width: 24px; height: 24px; pointer-events: auto; cursor: pointer;" />`,
+          size: new window.naver.maps.Size(24, 24),
+          anchor: new window.naver.maps.Point(12, 12),
+        },
+      });
+
+      window.naver.maps.Event.addListener(marker, 'click', () => {
+        if (onPinClick) onPinClick(pin);
+      });
+
+      markerRefs.current.push(marker); // 마커 저장
+    });
+  }, [map, pins, selectedPinId]);
 
   return { mapRef, isLoading };
 };
