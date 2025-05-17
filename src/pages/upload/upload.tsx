@@ -1,5 +1,7 @@
+import ReviewCategoryPage from './ReviewCategoryPage';
+
 const Upload = () => {
-  return <div></div>;
+  return <ReviewCategoryPage />;
 };
 
 export default Upload;
