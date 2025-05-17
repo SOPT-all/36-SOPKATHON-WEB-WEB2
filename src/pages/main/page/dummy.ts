@@ -1,4 +1,6 @@
-export const dummyPins = [
+import type { PinWithMark } from '@/shared/components/pin/pinInterface';
+
+export const dummyPins: PinWithMark[] = [
   {
     pinId: 1,
     latitude: 36.6285,
