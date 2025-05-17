@@ -16,33 +16,40 @@ const CategoryCard = ({
   onClick,
 }: CategoryCardProps) => {
   return (
-    <div
-      className={`p-[8px] rounded-lg inline-flex justify-between items-center w-[343px] h-[116px] ${
+    <button
+      className={`p-[8px] rounded-lg flex justify-between items-center w-[343px] h-[116px] transition-colors ${
         selected
-          ? 'bg-sky-100 outline outline-1 outline-offset-[-1px] outline-teal-400'
-          : 'bg-gray-100'
+          ? title === '맞아유!' 
+            ? 'bg-purple-100 outline outline-1 outline-offset-[-1px] outline-violet-600' 
+            : 'bg-CB-blue/10 outline outline-1 outline-offset-[-1px] outline-CB-blue'
+          : 'bg-gray-100 hover:bg-gray-200'
       }`}
       onClick={onClick}
+      type="button"
     >
-      <div className="inline-flex flex-col justify-start items-start gap-2 ml-[4px]">
-        <div
-          className={`self-stretch justify-center text-lg font-bold font-pretendard leading-relaxed ${
-            selected ? 'text-teal-400' : 'text-black'
+      <div className="flex flex-col justify-start items-start gap-2 ml-[4px]">
+        <h3
+          className={`self-stretch text-left text-lg font-bold font-pretendard leading-relaxed ${
+            selected ? (title === '맞아유!' ? 'text-black' : 'text-[#42BDCC]') : 'text-black'
           }`}
         >
           {title}
-        </div>
-        <div className="self-stretch justify-center text-gray-400 text-xs font-medium font-pretendard leading-tight">
+        </h3>
+        <p className="self-stretch text-left text-gray-400 text-xs font-medium font-pretendard leading-tight">
           {description.split('<br/>').map((line, index) => (
             <React.Fragment key={index}>
               {line}
               {index < description.split('<br/>').length - 1 && <br />}
             </React.Fragment>
           ))}
-        </div>
+        </p>
       </div>
-      <img className="w-[144px] h-[100px]" src={imgSrc} alt={title} />
-    </div>
+      <img 
+        className="w-[144px] h-[100px] object-contain" 
+        src={imgSrc} 
+        alt={title} 
+      />
+    </button>
   );
 };
 

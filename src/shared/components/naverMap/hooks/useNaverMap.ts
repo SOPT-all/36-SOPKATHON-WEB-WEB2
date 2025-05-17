@@ -31,7 +31,7 @@ export const useNaverMap = ({
   onPinClick,
 }: UseNaverMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const [location, setLocation] = useState({ lat: latitude, lng: longitude });
+  const [_mapCenter, setMapCenter] = useState({ lat: latitude, lng: longitude });
   const [isLoading, setIsLoading] = useState(useCurrentLocation);
   const [map, setMap] = useState<any>(null);
   const markerRefs = useRef<naver.maps.Marker[]>([]); // ✅ 마커들 참조
@@ -39,7 +39,7 @@ export const useNaverMap = ({
   // 현재 위치 가져오기
   useEffect(() => {
     if (!useCurrentLocation) {
-      setLocation({ lat: latitude, lng: longitude });
+      setMapCenter({ lat: latitude, lng: longitude });
       setIsLoading(false);
       return;
     }
@@ -49,7 +49,7 @@ export const useNaverMap = ({
       navigator.geolocation.getCurrentPosition(
         position => {
           const { latitude: currentLat, longitude: currentLng } = position.coords;
-          setLocation({ lat: currentLat, lng: currentLng });
+          setMapCenter({ lat: currentLat, lng: currentLng });
           setIsLoading(false);
 
           if (map) {
@@ -88,7 +88,7 @@ export const useNaverMap = ({
       );
 
       const mapInstance = new window.naver.maps.Map(mapRef.current, {
-        center: bounds.getCenter(),
+        center: new window.naver.maps.LatLng(_mapCenter.lat, _mapCenter.lng),
         zoom: 8,
         zoomControl: true,
         zoomControlOptions: {

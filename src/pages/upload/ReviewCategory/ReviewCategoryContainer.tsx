@@ -1,64 +1,71 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/components';
 import { CategoryCard } from './components';
-import PropertyO from '@/shared/assets/svg/Property 1=O.svg';
-import PropertyX from '@/shared/assets/svg/Property 1=X.svg';
+import { categories } from './data/categories';
+import type { CategoryItem } from './data/categories';
 import ArrowLeftIcon from '@/shared/assets/svg/ic_arrow_left_43.svg';
-import { useNavigate } from 'react-router-dom';
 
-interface CategoryItem {
-  id: string;
-  title: string;
-  description: string;
-  imgSrc: string;
+interface ReviewCategoryContainerProps {
+  onNext?: (category: string) => void;
+  standalone?: boolean;
 }
 
-const ReviewCategoryContainer = () => {
+const ReviewCategoryContainer = ({ onNext, standalone = false }: ReviewCategoryContainerProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const categories: CategoryItem[] = [
-    {
-      id: '아니어유?',
-      title: '아니어유?',
-      description: '나와 다른 충북에 대한<br/>이미지에 반박해주세요!',
-      imgSrc: PropertyX,
-    },
-    {
-      id: '맞아유!',
-      title: '맞아유!',
-      description: '내가 생각한 충북에 대한<br/>이미지에 리뷰를 작성해주세요',
-      imgSrc: PropertyO,
-    },
-  ];
+  // 브라우저 기본 뒤로가기를 처리하기 위한 효과
+  useEffect(() => {
+    const handlePopState = () => {
+      // 브라우저 뒤로가기 버튼 클릭 시 메인으로 리다이렉트
+      navigate('/main', { replace: true });
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [navigate]);
 
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);
   };
 
   const handleBackClick = () => {
-    navigate(-1);
+    // 히스토리를 대체하여 뒤로가기 시 업로드 페이지를 건너뛰도록 함
+    navigate('/main', { replace: true });
+  };
+  
+  const handleNextClick = () => {
+    if (selectedCategory) {
+      if (standalone) {
+        localStorage.setItem('selectedCategory', selectedCategory);
+        navigate('/upload/place');
+      } else if (onNext) {
+        onNext(selectedCategory);
+      }
+    }
   };
 
   return (
     <div className="mobile-layout">
-      {/* Back Button */}
+      <header className="pt-4 pb-6">
       <div className="left-0 top-0 absolute">
-        <button onClick={handleBackClick}>
+          <button onClick={handleBackClick} className="p-2">
           <img src={ArrowLeftIcon} alt="Back" />
         </button>
       </div>
 
-      {/* Title */}
       <div className="left-[16px] top-[59px] absolute">
         <h1 className="text-black text-lg font-bold font-pretendard leading-relaxed">
-          리뷰 카테코리를 선택해주세요!
+            리뷰 카테고리를 선택해주세요!
         </h1>
       </div>
+      </header>
 
-      {/* Category Cards */}
-      <div className="flex flex-col gap-[16px] w-full items-center top-[104px] absolute">
-        {categories.map(category => (
+      <main className="flex flex-col gap-[16px] w-full items-center top-[104px] absolute">
+        {categories.map((category: CategoryItem) => (
           <CategoryCard
             key={category.id}
             title={category.title}
@@ -68,12 +75,17 @@ const ReviewCategoryContainer = () => {
             onClick={() => handleCategorySelect(category.id)}
           />
         ))}
-      </div>
+      </main>
 
-      {/* Next Button */}
-      <div className="px-4 w-full bottom-[12px] absolute">
-        <Button disabled={!selectedCategory} className="w-full">다음</Button>
-      </div>
+      <footer className="px-4 w-full bottom-[12px] absolute">
+        <Button 
+          disabled={!selectedCategory} 
+          className="w-full"
+          onClick={handleNextClick}
+        >
+          다음
+        </Button>
+      </footer>
     </div>
   );
 };
