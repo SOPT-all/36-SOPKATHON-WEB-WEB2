@@ -2,10 +2,11 @@ import { createBrowserRouter } from 'react-router-dom';
 import MainPage from '@/pages/main/page/MainPage';
 import Detail from '@/pages/detail/Detail';
 import Upload from '@/pages/upload/ReviewCategory/components/upload';
+import Splash from '@/pages/splash/page/Splash';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/main',
     element: <MainPage />,
   },
 
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: '/upload',
     element: <Upload />,
+  },
+  {
+    path: '/',
+    element: <Splash />,
   },
 ]);
 

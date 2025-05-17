@@ -1,10 +1,14 @@
 import { useNaverMap } from './hooks/useNaverMap';
+import type { PinWithMark } from '../pin/pinInterface';
 
 interface NaverMapProps {
   className?: string;
   latitude?: number;
   longitude?: number;
   useCurrentLocation?: boolean;
+  pins?: PinWithMark[];
+  selectedPinId?: number | null;
+  onPinClick?: (pin: PinWithMark) => void;
 }
 
 declare global {
@@ -19,8 +23,18 @@ export default function NaverMap({
   latitude = 36.6357,
   longitude = 127.4917,
   useCurrentLocation = false,
+  pins = [],
+  selectedPinId = null,
+  onPinClick,
 }: NaverMapProps) {
-  const { mapRef, isLoading } = useNaverMap({ latitude, longitude, useCurrentLocation });
+  const { mapRef, isLoading } = useNaverMap({
+    latitude,
+    longitude,
+    useCurrentLocation,
+    pins,
+    selectedPinId,
+    onPinClick,
+  });
 
   return (
     <>
