@@ -1,5 +1,10 @@
-// hooks/useNaverMap.ts
 import { useEffect, useRef, useState } from 'react';
+import type { PinWithMark } from '../../pin/pinInterface';
+import { CHUNGBUK_COORD_PAIRS } from '../constant/coords';
+import IC_Pin_default from '@/shared/assets/svg/ic_pin_default.svg';
+import IC_Pin_x_default from '@/shared/assets/svg/ic_pin_x_default.svg';
+import IC_Pin_click from '@/shared/assets/svg/ic_pin_click.svg';
+import IC_Pin_x_click from '@/shared/assets/svg/ic_pin_x_click.svg';
 
 declare global {
   interface Window {
@@ -12,19 +17,24 @@ interface UseNaverMapProps {
   latitude?: number;
   longitude?: number;
   useCurrentLocation?: boolean;
+  pins?: PinWithMark[];
+  selectedPinId?: number | null;
+  onPinClick?: (pin: PinWithMark) => void;
 }
 
 export const useNaverMap = ({
   latitude = 37.5665,
   longitude = 126.978,
   useCurrentLocation = true,
+  pins = [],
+  selectedPinId = null,
+  onPinClick,
 }: UseNaverMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [location, setLocation] = useState({ lat: latitude, lng: longitude });
   const [isLoading, setIsLoading] = useState(useCurrentLocation);
   const [map, setMap] = useState<any>(null);
 
-  // 위치 가져오기
   useEffect(() => {
     if (!useCurrentLocation) {
       setLocation({ lat: latitude, lng: longitude });
@@ -72,8 +82,8 @@ export const useNaverMap = ({
       if (!window.naver || !window.naver.maps || !mapRef.current) return;
 
       const bounds = new window.naver.maps.LatLngBounds(
-        new window.naver.maps.LatLng(36.0, 126.8), // 남서쪽
-        new window.naver.maps.LatLng(37.2, 128.0) // 북동쪽
+        new window.naver.maps.LatLng(36.0, 126.8),
+        new window.naver.maps.LatLng(37.2, 128.0)
       );
 
       const mapInstance = new window.naver.maps.Map(mapRef.current, {
@@ -87,24 +97,46 @@ export const useNaverMap = ({
 
       mapInstance.fitBounds(bounds);
 
-      // ✅ 충북 단순화된 경계 좌표 (예시용)
-      const chungbukCoords = [
-        new naver.maps.LatLng(37.094, 127.48),
-        new naver.maps.LatLng(36.92, 128.1),
-        new naver.maps.LatLng(36.4, 128.05),
-        new naver.maps.LatLng(36.0, 127.7),
-        new naver.maps.LatLng(36.3, 126.9),
-        new naver.maps.LatLng(36.8, 127.0),
-        new naver.maps.LatLng(37.094, 127.48), // 닫기
-      ];
+      const chungbukCoords = CHUNGBUK_COORD_PAIRS.map(
+        ([lat, lng]) => new window.naver.maps.LatLng(lat, lng)
+      );
 
-      // ✅ 테두리만 그리기 (Polyline)
-      new naver.maps.Polyline({
+      new window.naver.maps.Polyline({
         path: chungbukCoords,
         map: mapInstance,
         strokeColor: '#42BDCC',
         strokeOpacity: 0.8,
         strokeWeight: 3,
+      });
+
+      pins.forEach(pin => {
+        const position = new window.naver.maps.LatLng(pin.latitude, pin.longitude);
+        const type = pin.defaultMark;
+        const isSelected = pin.pinId === selectedPinId;
+
+        const marker = new window.naver.maps.Marker({
+          position,
+          map: mapInstance,
+          icon: {
+            content: `<img src="${
+              type === 'O'
+                ? isSelected
+                  ? IC_Pin_click
+                  : IC_Pin_default
+                : isSelected
+                  ? IC_Pin_x_click
+                  : IC_Pin_x_default
+            }" alt="핀 아이콘 (${type})" style="width: 24px; height: 24px;" />`,
+            size: new window.naver.maps.Size(24, 24),
+            anchor: new window.naver.maps.Point(12, 12),
+          },
+        });
+
+        window.naver.maps.Event.addListener(marker, 'click', () => {
+          if (onPinClick) {
+            onPinClick(pin);
+          }
+        });
       });
 
       setMap(mapInstance);
@@ -121,7 +153,7 @@ export const useNaverMap = ({
       if (script) document.head.removeChild(script);
       delete window.navermap_authFailure;
     };
-  }, [location, isLoading]);
+  }, [location, isLoading, pins, selectedPinId, onPinClick]);
 
   return { mapRef, isLoading };
 };
