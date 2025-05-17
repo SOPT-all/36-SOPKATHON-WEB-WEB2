@@ -1,4 +1,3 @@
-
 export interface CreatePinRequest {
   isCorrect: boolean;
   region: string;

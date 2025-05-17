@@ -4,8 +4,8 @@ import ArrowLeft from '@/shared/assets/svg/arrow_left.svg';
 import CameraIcon from '@/shared/assets/svg/camera.svg';
 import Button from '@/shared/components/Button';
 import RegionSelector from './RegionSelector';
-import { createPin } from '@/shared/api/pinApi';
-import { uploadImage } from '@/shared/api/imageApi';
+import { createPin } from '@/shared/apis/pinApi';
+import { uploadImage } from '@/shared/apis/imageApi';
 import type { CreatePinRequest } from '@/shared/types/api';
 
 interface ReviewPlaceProps {
@@ -127,9 +127,10 @@ const ReviewPlace = ({ category, onBack }: ReviewPlaceProps) => {
       // 유저 ID 설정
       const userId = 6;
       
-      await createPin(pinData, userId);
-      // TODO: 성공 시 페이지 이동 추가 (URL 결정 후)
-      navigate('/main'); // 메인 페이지로 이동 (URL은 추후 변경 가능)
+      const response = await createPin(pinData, userId);
+      // 생성된 핀 ID를 가져와 디테일 페이지로 이동
+      const pinId = response.data.pinId;
+      navigate(`/detail/${pinId}`);
       
     } catch (error) {
       console.error('Failed to create pin:', error);

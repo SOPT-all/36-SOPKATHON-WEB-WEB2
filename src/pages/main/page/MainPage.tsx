@@ -4,7 +4,6 @@ import NaverMap from '@/shared/components/naverMap/NaverMap';
 import type { PinWithMark } from '@/shared/components/pin/pinInterface';
 import Modal from '@/shared/components/modal/Modal';
 import { PlaceCardList } from '../components';
-import { mockLocationDetails } from '@/shared/constants/mockData';
 import type { LocationDetail } from '@/shared/constants/mockData';
 import Header from '@/pages/main/components/header/Header';
 import Plus from '../components/plus/Plus';
@@ -12,9 +11,25 @@ import { Button } from '@/shared/components';
 import Ic_pin from '@/shared/assets/svg/ic_pin.svg';
 import { GetPins } from '@/shared/apis/main/GetPins';
 
+// Place 인터페이스 정의
+interface Place {
+  id: string;
+  positivePercent: number;
+  negativePercent: number;
+  // 필요한 추가 속성
+}
+
+type VoteStateType = 'positive' | 'negative' | null;
+type ModalType = 'yes' | 'no';
+
 const MainPage = () => {
   const [selectedPinId, setSelectedPinId] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState<ModalType>('yes');
+  const [fillOpacity, setFillOpacity] = useState(0);
+  const [voteState, setVoteState] = useState<VoteStateType>(null);
+  const [places, setPlaces] = useState<Place[]>([]);
+  const [selectedPlaceId] = useState<string | null>(null);
 
   const [isPlusClicked, setIsPlusClicked] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<{ lat: number; lng: number } | null>(
@@ -33,23 +48,20 @@ const MainPage = () => {
       }
     };
     loadPins();
-
   }, []);
 
   const handlePinClick = (pin: PinWithMark) => {
     setSelectedPinId(prevId => (prevId === pin.pinId ? null : pin.pinId));
-
   };
 
   const handleMapClick = (lat: number, lng: number) => {
-    console.log('🔥 클릭됨', lat, lng, naverMap); // ✅ 꼭 이거 찍혀야 함
+    console.log('🔥 클릭됨', lat, lng, naverMap);
 
     if (!isPlusClicked || !naverMap || selectedLocation) return;
 
     setSelectedLocation({ lat, lng });
     console.log('Ic_pin:', Ic_pin);
-    // ⛳️ 여기서 절대경로 or public URL 나와야 함
-    // 예: '/assets/ic_pin.abc123.svg'
+    
     new window.naver.maps.Marker({
       position: new window.naver.maps.LatLng(lat, lng),
       map: naverMap,
@@ -66,11 +78,10 @@ const MainPage = () => {
         anchor: new window.naver.maps.Point(20, 20),
       },
     });
-
   };
 
   // 도장 효과 활성화 함수
-  const activateStamp = (type: 'yes' | 'no') => {
+  const activateStamp = (type: ModalType) => {
     setModalType(type);
     setShowModal(true);
     // 배경색 변경 (fill 효과)
@@ -84,7 +95,7 @@ const MainPage = () => {
     // 투표 상태 업데이트
     setVoteState(isPositive ? 'positive' : 'negative');
     
-    // 임시로 로컬 상태 업데이트 (실제로는 서버에서 업데이트된 값을 받아와야 함)
+    // 임시로 로컬 상태 업데이트
     setPlaces(prevPlaces => 
       prevPlaces.map(place => {
         if (place.id === id) {
@@ -125,7 +136,6 @@ const MainPage = () => {
   };
 
   return (
-
     <>
       {isPlusClicked && (
         <div className="absolute top-[80px] left-1/2 -translate-x-1/2 z-50 w-80 px-2.5 py-3 bg-sky-100 rounded-md flex justify-center items-center">
@@ -164,33 +174,33 @@ const MainPage = () => {
         </div>
       )}
 
-    <div className="relative w-full h-screen">
-      {/* Fill 레이어 (투표 후 배경색 변경) */}
-      {fillOpacity > 0 && <div style={fillStyle} />}
-      
-      {/* 네이버 맵 */}
-      <NaverMap pins={dummyPins} selectedPinId={selectedPinId} onPinClick={handlePinClick} />
+      <div className="relative w-full h-screen">
+        {/* Fill 레이어 (투표 후 배경색 변경) */}
+        {fillOpacity > 0 && <div style={fillStyle} />}
+        
+        {/* 네이버 맵 (dummyPins 대신 pins 사용) */}
+        <NaverMap pins={pins} selectedPinId={selectedPinId} onPinClick={handlePinClick} />
 
+        {/* 장소 카드 리스트 */}
+        {places.length > 0 && (
+          <PlaceCardList 
+            places={places as LocationDetail[]}
+            selectedPlaceId={selectedPlaceId || ''}
+            voteState={voteState || 'none'} 
+            onVote={handleVote}
+            activateStamp={activateStamp}
+          />
+        )}
 
-      {/* 장소 카드 리스트 */}
-      {places.length > 0 && (
-        <PlaceCardList 
-          places={places} 
-          selectedPlaceId={selectedPlaceId}
-          voteState={voteState}
-          onVote={handleVote}
-          activateStamp={activateStamp}
-        />
-      )}
-
-      {/* 도장 모달 */}
-      {showModal && (
-        <Modal 
-          onClose={handleCloseModal} 
-          type={modalType} 
-        />
-      )}
-    </div>
+        {/* 도장 모달 */}
+        {showModal && (
+          <Modal 
+            onClose={handleCloseModal} 
+            type={modalType} 
+          />
+        )}
+      </div>
+    </>
   );
 };
 

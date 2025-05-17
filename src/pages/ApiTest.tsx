@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
-import { createPin, getPinsByRegion } from '@/shared/api/pinApi';
-import { uploadImage } from '@/shared/api/imageApi';
+import { createPin, getPinsByRegion } from '@/shared/apis/pinApi';
+import { uploadImage } from '@/shared/apis/imageApi';
 
 const ApiTest = () => {
   const [result, setResult] = useState<string>('');
