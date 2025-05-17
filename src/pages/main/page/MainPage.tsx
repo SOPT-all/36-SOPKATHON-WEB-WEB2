@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 
 import NaverMap from '@/shared/components/naverMap/NaverMap';
