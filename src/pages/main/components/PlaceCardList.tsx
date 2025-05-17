@@ -28,7 +28,7 @@ const PlaceCardList = ({
   }
 
   return (
-    <div className="fixed bottom-2 left-0 right-0 flex justify-center z-10">
+    <div className="fixed bottom-2 mb-[180px] left-0 right-0 flex justify-center z-10">
       <PlaceCard
         id={selectedPlace.id}
         title={selectedPlace.title}
@@ -40,6 +40,8 @@ const PlaceCardList = ({
         isSelected={true}
         onVote={onVote}
         activateStamp={activateStamp}
+        reviews={selectedPlace.reviews}
+        imageUrl={selectedPlace.imageUrl}
       />
     </div>
   );
