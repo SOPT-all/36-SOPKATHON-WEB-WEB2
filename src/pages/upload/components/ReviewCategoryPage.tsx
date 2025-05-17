@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/shared/components';
-import { CategoryCard } from './components';
+import { CategoryCard } from '.';
 import HamsterImage from '@/shared/assets/svg/image 3.svg';
 import ArrowLeftIcon from '@/shared/assets/svg/ic_arrow_left_43.svg';
 import { useNavigate } from 'react-router-dom';
@@ -21,14 +21,14 @@ const ReviewCategoryPage = () => {
       id: '아니어유?',
       title: '아니어유?',
       description: '나와 다른 충북에 대한<br/>이미지에 반박해주세요!',
-      imgSrc: HamsterImage
+      imgSrc: HamsterImage,
     },
     {
       id: '맞아유!',
       title: '맞아유!',
       description: '내가 생각한 충북에 대한<br/>이미지에 리뷰를 작성해주세요',
-      imgSrc: HamsterImage
-    }
+      imgSrc: HamsterImage,
+    },
   ];
 
   const handleCategorySelect = (categoryId: string) => {
@@ -47,7 +47,7 @@ const ReviewCategoryPage = () => {
           <img src={ArrowLeftIcon} alt="Back" />
         </button>
       </div>
-      
+
       {/* Title */}
       <div className="left-[16px] top-[59px] absolute">
         <h1 className="text-black text-lg font-bold font-pretendard leading-relaxed">
@@ -57,7 +57,7 @@ const ReviewCategoryPage = () => {
 
       {/* Category Cards */}
       <div className="flex flex-col gap-[16px] w-full items-center top-[104px] absolute">
-        {categories.map((category) => (
+        {categories.map(category => (
           <CategoryCard
             key={category.id}
             title={category.title}
