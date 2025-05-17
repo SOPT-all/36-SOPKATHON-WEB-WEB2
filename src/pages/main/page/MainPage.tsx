@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import NaverMap from '@/shared/components/naverMap/NaverMap';
 import { dummyPins } from './dummy';
@@ -17,6 +18,7 @@ const MainPage = () => {
       <NaverMap pins={dummyPins} selectedPinId={selectedPinId} onPinClick={handlePinClick} />
     </>
   );
+
 };
 
 export default MainPage;
