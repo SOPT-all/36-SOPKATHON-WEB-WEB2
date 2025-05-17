@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/shared/components';
-import { CategoryCard } from '.';
+import { CategoryCard } from './components';
 import HamsterImage from '@/shared/assets/svg/image 3.svg';
 import ArrowLeftIcon from '@/shared/assets/svg/ic_arrow_left_43.svg';
 import { useNavigate } from 'react-router-dom';
