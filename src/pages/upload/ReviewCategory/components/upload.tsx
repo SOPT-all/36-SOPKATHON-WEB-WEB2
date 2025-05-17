@@ -12,7 +12,7 @@ interface CategoryItem {
   imgSrc: string;
 }
 
-const ReviewCategoryPage = () => {
+const Upload = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -77,4 +77,4 @@ const ReviewCategoryPage = () => {
   );
 };
 
-export default ReviewCategoryPage;
+export default Upload;
