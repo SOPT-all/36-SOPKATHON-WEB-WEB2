@@ -21,10 +21,7 @@ const Header = ({ title, showBackButton = true, onBackClick }: HeaderProps) => {
   return (
     <div className="w-full py-4 px-4 flex items-center">
       {showBackButton && (
-        <button 
-          onClick={handleBackClick}
-          className="w-11 h-11 flex items-center justify-center"
-        >
+        <button onClick={handleBackClick} className="w-11 h-11 flex items-center justify-center">
           <img src={ArrowLeftIcon} alt="Back" className="w-6 h-6" />
         </button>
       )}
@@ -33,4 +30,4 @@ const Header = ({ title, showBackButton = true, onBackClick }: HeaderProps) => {
   );
 };
 
-export default Header; 
+export default Header;
