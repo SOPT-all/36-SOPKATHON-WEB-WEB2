@@ -1,3 +1,4 @@
+// useNaverMap.ts
 import { useEffect, useRef, useState } from 'react';
 import type { PinWithMark } from '../../pin/pinInterface';
 import { CHUNGBUK_COORD_PAIRS } from '../constant/coords';
@@ -6,13 +7,6 @@ import IC_Pin_x_default from '@/shared/assets/svg/ic_pin_x_default.svg';
 import IC_Pin_click from '@/shared/assets/svg/ic_pin_click.svg';
 import IC_Pin_x_click from '@/shared/assets/svg/ic_pin_x_click.svg';
 
-declare global {
-  interface Window {
-    naver: any;
-    navermap_authFailure?: () => void;
-  }
-}
-
 interface UseNaverMapProps {
   latitude?: number;
   longitude?: number;
@@ -20,6 +14,8 @@ interface UseNaverMapProps {
   pins?: PinWithMark[];
   selectedPinId?: number | null;
   onPinClick?: (pin: PinWithMark) => void;
+  onMapClick?: (lat: number, lng: number) => void;
+  onMapReady?: (map: any) => void;
 }
 
 export const useNaverMap = ({
@@ -29,14 +25,15 @@ export const useNaverMap = ({
   pins = [],
   selectedPinId = null,
   onPinClick,
+  onMapClick,
+  onMapReady,
 }: UseNaverMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [, setMapCenter] = useState({ lat: latitude, lng: longitude });
   const [isLoading, setIsLoading] = useState(useCurrentLocation);
   const [map, setMap] = useState<any>(null);
-  const markerRefs = useRef<naver.maps.Marker[]>([]); // ✅ 마커들 참조
+  const markerRefs = useRef<naver.maps.Marker[]>([]);
 
-  // 현재 위치 가져오기
   useEffect(() => {
     if (!useCurrentLocation) {
       setMapCenter({ lat: latitude, lng: longitude });
@@ -73,7 +70,6 @@ export const useNaverMap = ({
     }
   }, [useCurrentLocation, latitude, longitude]);
 
-  // 지도 초기화 (최초 1회)
   useEffect(() => {
     if (isLoading) return;
 
@@ -98,7 +94,6 @@ export const useNaverMap = ({
 
       mapInstance.fitBounds(bounds);
 
-      // 충북 경계선
       const chungbukCoords = CHUNGBUK_COORD_PAIRS.map(
         ([lat, lng]) => new window.naver.maps.LatLng(lat, lng)
       );
@@ -111,7 +106,19 @@ export const useNaverMap = ({
         strokeWeight: 3,
       });
 
-      setMap(mapInstance); // ✅ 이후 마커 렌더링은 별도 effect
+      if (onMapClick) {
+        window.naver.maps.Event.addListener(mapInstance, 'click', (e: any) => {
+          const lat = e.latlng.lat();
+          const lng = e.latlng.lng();
+          console.log('지도 클릭됨:', lat, lng);
+          onMapClick(lat, lng);
+        });
+      }
+      setMap(mapInstance);
+
+      if (onMapReady) {
+        onMapReady(mapInstance);
+      }
     };
 
     const script = document.createElement('script');
@@ -127,15 +134,12 @@ export const useNaverMap = ({
     };
   }, [isLoading]);
 
-  // 마커 렌더링은 따로 관리 (selectedPinId 변경 대응)
   useEffect(() => {
     if (!map) return;
 
-    // 이전 마커 제거
     markerRefs.current.forEach(marker => marker.setMap(null));
     markerRefs.current = [];
 
-    // 새 마커 렌더링
     pins.forEach(pin => {
       const position = new window.naver.maps.LatLng(pin.latitude, pin.longitude);
       const type = pin.defaultMark;
@@ -163,7 +167,7 @@ export const useNaverMap = ({
         if (onPinClick) onPinClick(pin);
       });
 
-      markerRefs.current.push(marker); // 마커 저장
+      markerRefs.current.push(marker);
     });
   }, [map, pins, selectedPinId]);
 

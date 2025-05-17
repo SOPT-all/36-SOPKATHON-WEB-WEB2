@@ -11,7 +11,8 @@ const Header = () => {
     const loadPins = async () => {
       try {
         const data = await fetchRegionPins();
-        setRegionPins(data);
+        console.log(data);
+        setRegionPins(data.data);
       } catch (error) {
         console.error('지역 핀 불러오기 실패:', error);
       }
