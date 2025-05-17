@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ArrowLeft from '@/shared/assets/svg/arrow_left.svg'; // SVG 파일을 직접 import
-import CameraIcon from '@/shared/assets/svg/camera.svg'; // Importing the SVG as a path for image tag
-
+import ArrowLeft from '@/shared/assets/svg/arrow_left.svg';
+import CameraIcon from '@/shared/assets/svg/camera.svg';
+import Button from '@/shared/components/Button';
 const Upload = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState<string | null>(null);
@@ -37,15 +37,15 @@ const Upload = () => {
     );
   };
 
-  // const handleSubmit = () => {
-  //   console.log({
-  //     image,
-  //     placeName,
-  //     regionName,
-  //     selectedEvaluations,
-  //     review,
-  //   });
-  // };
+  const handleSubmit = () => {
+    console.log({
+      image,
+      placeName,
+      regionName,
+      selectedEvaluations,
+      review,
+    });
+  };
 
   return (
     <>
@@ -108,7 +108,7 @@ const Upload = () => {
                   onClick={() => toggleEvaluation(evaluation)}
                   className={`px-4 py-2 rounded-full ${
                     selectedEvaluations.includes(evaluation)
-                      ? 'bg-[#E1FCFF] text-[#42BDCC]'
+                      ? 'bg-[#E1FCFF] text-[0.8125rem] text-[#42BDCC]'
                       : 'bg-[#F3F3F6] text-[0.8125rem] text-[#999AAB]'
                   }`}
                 >
@@ -124,8 +124,10 @@ const Upload = () => {
             className="w-[21.375rem] py-[0.75rem] px-[0.625rem] bg-[#F3F3F6] rounded-[0.5rem] min-h-[100px] resize-none outline-none flex-shrink-0 placeholder:text-[#999AAB] placeholder:font-medium placeholder:text-sm placeholder:font-['Pretendard'] placeholder:leading-[140%]"
           />
           <div className="flex flex-col gap-2">
-            <h2 className="text-lg font-semibold">대표 사진을 등록해주세요</h2>
-            <div className="w-[120px] h-[120px] mb-[1.69rem] bg-[#F3F3F6] rounded-lg flex items-center justify-center relative">
+            <h2 className="text-black text-sm font-semibold font-['Pretendard'] leading-tight">
+              대표 사진을 등록해주세요
+            </h2>
+            <div className="w-[5.5rem] h-[5.5rem] border-[1px] border-[#E6E6EB] bg-[#F3F3F6] rounded-lg flex items-center justify-center relative">
               {image ? (
                 <img src={image} alt="Uploaded" className="w-full h-full object-cover rounded-lg" />
               ) : (
@@ -143,6 +145,9 @@ const Upload = () => {
               />
             </div>
           </div>
+          <Button onClick={handleSubmit} variant="teal" className="mt-[1.69rem] mb-[3.125rem]">
+            등록하기
+          </Button>
         </div>
       </div>
     </>
