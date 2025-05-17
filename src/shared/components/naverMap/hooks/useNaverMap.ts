@@ -1,3 +1,4 @@
+// useNaverMap.ts
 import { useEffect, useRef, useState } from 'react';
 import type { PinWithMark } from '../../pin/pinInterface';
 import { CHUNGBUK_COORD_PAIRS } from '../constant/coords';
@@ -6,13 +7,6 @@ import IC_Pin_x_default from '@/shared/assets/svg/ic_pin_x_default.svg';
 import IC_Pin_click from '@/shared/assets/svg/ic_pin_click.svg';
 import IC_Pin_x_click from '@/shared/assets/svg/ic_pin_x_click.svg';
 
-declare global {
-  interface Window {
-    naver: any;
-    navermap_authFailure?: () => void;
-  }
-}
-
 interface UseNaverMapProps {
   latitude?: number;
   longitude?: number;
@@ -20,6 +14,8 @@ interface UseNaverMapProps {
   pins?: PinWithMark[];
   selectedPinId?: number | null;
   onPinClick?: (pin: PinWithMark) => void;
+  onMapClick?: (lat: number, lng: number) => void;
+  onMapReady?: (map: any) => void;
 }
 
 export const useNaverMap = ({
@@ -29,6 +25,8 @@ export const useNaverMap = ({
   pins = [],
   selectedPinId = null,
   onPinClick,
+  onMapClick,
+  onMapReady,
 }: UseNaverMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [_mapCenter, setMapCenter] = useState({ lat: latitude, lng: longitude });
@@ -108,7 +106,20 @@ export const useNaverMap = ({
         strokeWeight: 3,
       });
 
+      if (onMapClick) {
+        window.naver.maps.Event.addListener(mapInstance, 'click', (e: any) => {
+          const lat = e.latlng.lat();
+          const lng = e.latlng.lng();
+          console.log('지도 클릭됨:', lat, lng);
+          onMapClick(lat, lng);
+        });
+      }
+      
       setMap(mapInstance);
+
+      if (onMapReady) {
+        onMapReady(mapInstance);
+      }
     };
 
     const script = document.createElement('script');

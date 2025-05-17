@@ -41,3 +41,12 @@ button {
 * {
   box-sizing: border-box;
 }
+
+/* 장소 컴포넌트 위치 관련 클래스 */
+.place-card-container {
+  position: fixed;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}

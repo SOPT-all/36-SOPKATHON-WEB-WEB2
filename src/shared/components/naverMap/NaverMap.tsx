@@ -1,3 +1,4 @@
+// NaverMap.tsx
 import { useNaverMap } from './hooks/useNaverMap';
 import type { PinWithMark } from '../pin/pinInterface';
 
@@ -9,6 +10,8 @@ interface NaverMapProps {
   pins?: PinWithMark[];
   selectedPinId?: number | null;
   onPinClick?: (pin: PinWithMark) => void;
+  onMapClick?: (lat: number, lng: number) => void;
+  onMapReady?: (map: any) => void;
 }
 
 declare global {
@@ -26,7 +29,10 @@ export default function NaverMap({
   pins = [],
   selectedPinId = null,
   onPinClick,
+  onMapClick,
+  onMapReady,
 }: NaverMapProps) {
+  console.log('NAver', pins);
   const { mapRef, isLoading } = useNaverMap({
     latitude,
     longitude,
@@ -34,6 +40,8 @@ export default function NaverMap({
     pins,
     selectedPinId,
     onPinClick,
+    onMapClick,
+    onMapReady,
   });
 
   return (
