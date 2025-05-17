@@ -27,10 +27,8 @@ const ReviewPlaceContainer = ({
     }
   }, [standalone, navigate]);
 
-  // 브라우저 기본 뒤로가기를 처리하기 위한 효과
   useEffect(() => {
     const handlePopState = () => {
-      // 브라우저 뒤로가기 버튼 클릭 시 메인으로 리다이렉트
       navigate('/main', { replace: true });
     };
 
@@ -42,7 +40,6 @@ const ReviewPlaceContainer = ({
 
   const handleBack = () => {
     if (standalone) {
-      // 히스토리를 대체하여 뒤로가기 시 이전 페이지들을 건너뛰도록 함
       navigate('/main', { replace: true });
     } else if (onBack) {
       onBack();

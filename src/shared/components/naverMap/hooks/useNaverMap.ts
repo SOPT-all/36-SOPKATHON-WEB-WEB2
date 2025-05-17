@@ -34,9 +34,8 @@ export const useNaverMap = ({
   const [_mapCenter, setMapCenter] = useState({ lat: latitude, lng: longitude });
   const [isLoading, setIsLoading] = useState(useCurrentLocation);
   const [map, setMap] = useState<any>(null);
-  const markerRefs = useRef<naver.maps.Marker[]>([]); // ✅ 마커들 참조
+  const markerRefs = useRef<naver.maps.Marker[]>([]);
 
-  // 현재 위치 가져오기
   useEffect(() => {
     if (!useCurrentLocation) {
       setMapCenter({ lat: latitude, lng: longitude });
@@ -73,7 +72,6 @@ export const useNaverMap = ({
     }
   }, [useCurrentLocation, latitude, longitude]);
 
-  // 지도 초기화 (최초 1회)
   useEffect(() => {
     if (isLoading) return;
 
@@ -98,7 +96,6 @@ export const useNaverMap = ({
 
       mapInstance.fitBounds(bounds);
 
-      // 충북 경계선
       const chungbukCoords = CHUNGBUK_COORD_PAIRS.map(
         ([lat, lng]) => new window.naver.maps.LatLng(lat, lng)
       );
@@ -111,7 +108,7 @@ export const useNaverMap = ({
         strokeWeight: 3,
       });
 
-      setMap(mapInstance); // ✅ 이후 마커 렌더링은 별도 effect
+      setMap(mapInstance);
     };
 
     const script = document.createElement('script');
@@ -127,15 +124,12 @@ export const useNaverMap = ({
     };
   }, [isLoading]);
 
-  // 마커 렌더링은 따로 관리 (selectedPinId 변경 대응)
   useEffect(() => {
     if (!map) return;
 
-    // 이전 마커 제거
     markerRefs.current.forEach(marker => marker.setMap(null));
     markerRefs.current = [];
 
-    // 새 마커 렌더링
     pins.forEach(pin => {
       const position = new window.naver.maps.LatLng(pin.latitude, pin.longitude);
       const type = pin.defaultMark;
@@ -163,7 +157,7 @@ export const useNaverMap = ({
         if (onPinClick) onPinClick(pin);
       });
 
-      markerRefs.current.push(marker); // 마커 저장
+      markerRefs.current.push(marker);
     });
   }, [map, pins, selectedPinId]);
 
