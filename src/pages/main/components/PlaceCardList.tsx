@@ -1,22 +1,21 @@
-import { useState, useEffect } from 'react';
-import PlaceCard from './PlaceCard';
 import type { LocationDetail } from '@/shared/constants/mockData';
+import PlaceCard from './PlaceCard';
 
 interface PlaceCardListProps {
-  places: LocationDetail[]; // 장소 데이터 배열
-  selectedPlaceId?: string; // 지도에서 선택된 장소 ID
-  voteState: 'none' | 'positive' | 'negative'; // 투표 상태
-  onVote?: (id: string, isPositive: boolean) => void; // 투표 기능
-  activateStamp?: (type: 'yes' | 'no') => void; // 도장 활성화 함수
+  places: LocationDetail[];
+  selectedPlaceId: string | null;
+  voteState: 'none' | 'positive' | 'negative';
+  onVote: (type: 'positive' | 'negative') => void;
+  activateStamp: (type: 'yes' | 'no') => void;
 }
 
-const PlaceCardList = ({
+export default function PlaceCardList({
   places,
   selectedPlaceId,
   voteState,
   onVote,
   activateStamp,
-}: PlaceCardListProps) => {
+}: PlaceCardListProps) {
   // 선택된 장소만 찾아서 표시
   const selectedPlace = selectedPlaceId
     ? places.find(place => place.id === selectedPlaceId)
@@ -37,7 +36,6 @@ const PlaceCardList = ({
         positivePercent={selectedPlace.positivePercent}
         negativePercent={selectedPlace.negativePercent}
         voteState={voteState}
-        isSelected={true}
         onVote={onVote}
         activateStamp={activateStamp}
         reviews={selectedPlace.reviews}
@@ -45,6 +43,4 @@ const PlaceCardList = ({
       />
     </div>
   );
-};
-
-export default PlaceCardList;
+}
