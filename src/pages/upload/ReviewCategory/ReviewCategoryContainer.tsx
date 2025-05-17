@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/shared/components';
-import { CategoryCard } from '.';
+import { CategoryCard } from './components';
 import HamsterImage from '@/shared/assets/svg/image 3.svg';
 import ArrowLeftIcon from '@/shared/assets/svg/ic_arrow_left_43.svg';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,7 @@ interface CategoryItem {
   imgSrc: string;
 }
 
-const ReviewCategoryPage = () => {
+const ReviewCategoryContainer = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -70,11 +70,11 @@ const ReviewCategoryPage = () => {
       </div>
 
       {/* Next Button */}
-      <div className="w-full flex justify-center bottom-[12px] absolute">
-        <Button disabled={!selectedCategory}>다음</Button>
+      <div className="px-4 w-full bottom-[12px] absolute">
+        <Button disabled={!selectedCategory} className="w-full">다음</Button>
       </div>
     </div>
   );
 };
 
-export default ReviewCategoryPage;
+export default ReviewCategoryContainer;

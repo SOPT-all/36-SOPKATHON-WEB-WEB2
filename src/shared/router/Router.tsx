@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainPage from '@/pages/main/page/MainPage';
 import Detail from '@/pages/detail/Detail';
-import Upload from '@/pages/upload/page/Upload';
+import Upload from '@/pages/upload/ReviewCategory/components/upload';
 import Splash from '@/pages/splash/page/Splash';
 
 const router = createBrowserRouter([
