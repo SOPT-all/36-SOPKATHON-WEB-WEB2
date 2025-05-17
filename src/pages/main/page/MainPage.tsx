@@ -3,6 +3,7 @@ import NaverMap from '@/shared/components/naverMap/NaverMap';
 import { dummyPins } from './dummy';
 import type { PinWithMark } from '@/shared/components/pin/pinInterface';
 import Modal from '@/shared/components/modal/Modal';
+import Header from '@/pages/main/components/header/Header';
 
 const MainPage = () => {
   const [selectedPinId, setSelectedPinId] = useState<number | null>(null);
@@ -16,7 +17,7 @@ const MainPage = () => {
 
   return (
     <>
-      <button onClick={() => setShowModal(true)}>Click</button>
+      <Header />
       <NaverMap pins={dummyPins} selectedPinId={selectedPinId} onPinClick={handlePinClick} />
 
       {showModal && <Modal onClose={() => setShowModal(false)} />}
