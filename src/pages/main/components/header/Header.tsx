@@ -29,7 +29,7 @@ const Header = () => {
         </Text>
       </div>
 
-      <div className="flex items-center gap-[0.6rem] self-stretch">
+      <div className="flex items-center gap-[0.6rem] self-stretch overflow-x-auto whitespace-nowrap scrollbar-hide">
         {regionPins.map((name, idx) => (
           <Tag key={idx} rank={idx + 1} name={name} />
         ))}
