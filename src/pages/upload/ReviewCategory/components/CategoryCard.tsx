@@ -17,7 +17,7 @@ const CategoryCard = ({
 }: CategoryCardProps) => {
   return (
     <div
-      className={`p-[8px] rounded-lg inline-flex justify-between items-center w-[342px] h-[118px] ${
+      className={`p-[8px] rounded-lg inline-flex justify-between items-center w-[343px] h-[116px] ${
         selected
           ? 'bg-sky-100 outline outline-1 outline-offset-[-1px] outline-teal-400'
           : 'bg-gray-100'
@@ -41,7 +41,7 @@ const CategoryCard = ({
           ))}
         </div>
       </div>
-      <img className="w-[93px] h-[93px]" src={imgSrc} alt={title} />
+      <img className="w-[144px] h-[100px]" src={imgSrc} alt={title} />
     </div>
   );
 };
