@@ -13,8 +13,19 @@ body {
 }
 #root {
   width: 375px;
+  height: 667px;
   margin: 0 auto;
   background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-layout {
+  width: 375px;
+  height: 667px;
+  position: relative;
+  background-color: #ffffff;
+  overflow: hidden;
 }
 
 a {
