@@ -29,7 +29,7 @@ export const useNaverMap = ({
   onMapReady,
 }: UseNaverMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const [, setMapCenter] = useState({ lat: latitude, lng: longitude });
+  const [_mapCenter, setMapCenter] = useState({ lat: latitude, lng: longitude });
   const [isLoading, setIsLoading] = useState(useCurrentLocation);
   const [map, setMap] = useState<any>(null);
   const markerRefs = useRef<naver.maps.Marker[]>([]);
@@ -84,7 +84,7 @@ export const useNaverMap = ({
       );
 
       const mapInstance = new window.naver.maps.Map(mapRef.current, {
-        center: bounds.getCenter(),
+        center: new window.naver.maps.LatLng(_mapCenter.lat, _mapCenter.lng),
         zoom: 8,
         zoomControl: true,
         zoomControlOptions: {
@@ -114,6 +114,7 @@ export const useNaverMap = ({
           onMapClick(lat, lng);
         });
       }
+      
       setMap(mapInstance);
 
       if (onMapReady) {

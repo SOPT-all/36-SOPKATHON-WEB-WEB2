@@ -19,14 +19,23 @@ const Header = ({ title, showBackButton = true, onBackClick }: HeaderProps) => {
   };
 
   return (
-    <div className="w-full py-4 px-4 flex items-center">
+    <header className="pt-4 pb-6">
       {showBackButton && (
-        <button onClick={handleBackClick} className="w-11 h-11 flex items-center justify-center">
-          <img src={ArrowLeftIcon} alt="Back" className="w-6 h-6" />
-        </button>
+        <div className="left-0 top-0 absolute">
+          <button onClick={handleBackClick} className="p-2">
+            <img src={ArrowLeftIcon} alt="Back" />
+          </button>
+        </div>
       )}
-      <h1 className="text-body-bold-17 ml-2">{title}</h1>
-    </div>
+      
+      {title && (
+        <div className="left-[16px] top-[59px] absolute">
+          <h1 className="text-black text-lg font-bold font-pretendard leading-relaxed">
+            {title}
+          </h1>
+        </div>
+      )}
+    </header>
   );
 };
 

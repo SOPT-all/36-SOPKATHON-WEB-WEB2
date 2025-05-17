@@ -51,13 +51,13 @@ const RegionSelector: React.FC<RegionSelectorProps> = ({ isOpen, onClose, onSele
                       key={region}
                       data-property-1={selectedRegion === region ? 'active' : 'enabled'}
                       className={`flex-1 p-2.5 ${
-                        selectedRegion === region ? 'bg-sky-100' : 'bg-gray-100'
+                        selectedRegion === region ? 'bg-CB-blue/10' : 'bg-gray-100'
                       } rounded flex justify-center items-center gap-2 cursor-pointer`}
                       onClick={() => handleRegionClick(region)}
                     >
                       <div
                         className={`justify-center ${
-                          selectedRegion === region ? 'text-teal-400' : 'text-gray-400'
+                          selectedRegion === region ? 'text-CB-blue' : 'text-gray-400'
                         } text-xs font-medium font-pretendard leading-tight`}
                       >
                         {region}
