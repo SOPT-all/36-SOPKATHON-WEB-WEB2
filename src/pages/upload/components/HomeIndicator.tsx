@@ -6,4 +6,4 @@ const HomeIndicator = () => {
   );
 };
 
-export default HomeIndicator; 
+export default HomeIndicator;
