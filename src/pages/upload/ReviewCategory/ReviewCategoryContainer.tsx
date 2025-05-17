@@ -72,7 +72,9 @@ const ReviewCategoryContainer = () => {
 
       {/* Next Button */}
       <div className="px-4 w-full bottom-[12px] absolute">
-        <Button disabled={!selectedCategory} className="w-full">다음</Button>
+        <Button disabled={!selectedCategory} className="w-full">
+          다음
+        </Button>
       </div>
     </div>
   );

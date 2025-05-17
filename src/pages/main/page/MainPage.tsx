@@ -6,6 +6,7 @@ import Modal from '@/shared/components/modal/Modal';
 import { PlaceCardList } from '../components';
 import { mockLocationDetails } from '@/shared/constants/mockData';
 import type { LocationDetail } from '@/shared/constants/mockData';
+import Header from '@/pages/main/components/header/Header';
 
 const MainPage = () => {
   const [selectedPinId, setSelectedPinId] = useState<number | null>(null);
