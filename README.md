@@ -1,5 +1,5 @@
 <div align="center">
-  <h2>충청북도 + X</h2>
+  <h2>도리도리</h2>
   <p>충북의 숨은 관광지에 대한 호기심을 불러일으켜 실제 방문 유도하기</p>
 </div>
 
@@ -24,7 +24,7 @@
                 <b>jisooooooooooo</b>
             </a>
             <p>임지수</p>
-            <p>작성 페이지</p>
+            <p>스플래시, 장소 평가 작성 페이지</p>
         </td>
         <td style="min-width: 150px;">
             <a href="https://github.com/hamxxn">
@@ -33,7 +33,7 @@
                 <b>hamxxn</b>
             </a>
             <p>권동희</p>
-            <p>작성 상세 페이지</p>
+            <p>메인 페이지</p>
         </td>
         <td style="min-width: 150px;">
             <a href="https://github.com/shinjigu">
@@ -42,7 +42,7 @@
                 <b>shinjigu</b>
             </a>
             <p>신지수</p>
-            <p>메인 페이지</p>
+            <p>장소 상세 페이지</p>
         </td>
         <td style="min-width: 150px;">
             <a href="https://github.com/karnelll">
@@ -51,13 +51,12 @@
                 <b>karnell</b>
             </a>
             <p>최서희</p>
-            <p>스플래시, 메인 컴포넌트</p>
+            <p>장소 리뷰 카테고리, 지역 선택 모달</p>
         </td>
     </tr>
 </table>
 
 <h2> 🛠 기술스택 </h2>
-
 
 
 ```
